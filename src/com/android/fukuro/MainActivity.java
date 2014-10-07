@@ -2,15 +2,30 @@ package com.android.fukuro;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends Activity {
+	
+	private DBHelper dbHelper = new DBHelper(this);
+	
+	public static SQLiteDatabase db;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		//読み書き可能なデータベースをオープン
+		// 読み取り専用の場合はgetReadableDatabase()を用いる
+		db = dbHelper.getWritableDatabase();
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		dbHelper.close();
 	}
 
 	@Override
