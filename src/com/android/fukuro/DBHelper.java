@@ -44,7 +44,8 @@ public class DBHelper extends SQLiteOpenHelper {
 		String sql5 = "CREATE TABLE Mylistmaking ( " +
 				"mylist_id TEXT, " +
 				"item_id TEXT, " +
-				"item_position TEXT, " +
+				"item_position TEXT NOT NULL, " +
+				"item_priority TEXT NOT NULL, " +
 				"PRIMARY KEY(mylist_id,item_id), " +
 				"FOREIGN KEY(mylist_id)REFERENCES Mylist(mylist_id), " +
 				"FOREIGN KEY(item_id)REFERENCES Item(item_id))";
@@ -52,10 +53,10 @@ public class DBHelper extends SQLiteOpenHelper {
 		String sql6 = "CREATE TABLE Ranking ( " +
 				"ranking_id TEXT, " +
 				"user_id TEXT NOT NULL, " +
-				"ranking_thambnail TEXT, " +
-				"ranking_item TEXT, " +
-				"date NUMERIC, " +
-				"good NUMERIC, " +
+				"ranking_thambnail TEXT NOT NULL, " +
+				"ranking_item TEXT NOT NULL, " +
+				"date NUMERIC NOT NULL, " +
+				"good NUMERIC NOT NULL, " +
 				"PRIMARY KEY(ranking_id), " +
 				"FOREIGN KEY(user_id)REFERENCES User(user_id))";
 		
