@@ -30,6 +30,9 @@ public class Mylist extends Activity implements OnItemClickListener {
 	private DBHelper dbHelper = new DBHelper(this);
 	public static SQLiteDatabase db;
 
+	GridView gridview;
+	GridAdapter adapter;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,18 +40,31 @@ public class Mylist extends Activity implements OnItemClickListener {
 
 		db = dbHelper.getReadableDatabase();
 
-		// GridViewのインスタンスを生成
-		GridView gridview = (GridView) findViewById(R.id.gridview);
-		// BaseAdapter を継承したGridAdapterのインスタンスを生成
-		// 子要素のレイアウトファイル grid_items.xml を main.xml に inflate するためにGridAdapterに引数として渡す
-		GridAdapter adapter = new GridAdapter(this.getApplicationContext(), R.layout.grid_item, imgList);
-		// gridViewにadapterをセット
-		gridview.setAdapter(adapter);
-		// gridviewにクリックリスナーセット
-		gridview.setOnItemClickListener(this);
 
-		// それのパスを取り出す method
-		getImagePath();
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onResume();
+
+		imgList = new ArrayList<String>();
+		filename = new ArrayList<Integer>();
+		favoList = new ArrayList<String>();
+
+
+		// GridViewのインスタンスを生成
+				gridview = (GridView) findViewById(R.id.gridview);
+				// BaseAdapter を継承したGridAdapterのインスタンスを生成
+				// 子要素のレイアウトファイル grid_items.xml を main.xml に inflate するためにGridAdapterに引数として渡す
+				adapter = new GridAdapter(this.getApplicationContext(), R.layout.grid_item, imgList);
+				// gridViewにadapterをセット
+				gridview.setAdapter(adapter);
+				// gridviewにクリックリスナーセット
+				gridview.setOnItemClickListener(this);
+
+				// それのパスを取り出す method
+				getImagePath();
 	}
 
 	@Override
@@ -83,7 +99,7 @@ public class Mylist extends Activity implements OnItemClickListener {
 		//プラスボタン画像をfileListに挿入
 
 		for(int cnt = 1; cnt <= cr.getCount(); cnt++){
-			destPath = "/data/data/"+this.getPackageName()+"/Thambnail/" + cr.getString(1);
+			destPath = "/data/data/"+this.getPackageName()+"/Item/" + cr.getString(1);
 			System.out.println(cr.getString(1));
 
 			// List<String> imgList にはファイルのパスを入れる
@@ -144,6 +160,7 @@ public class Mylist extends Activity implements OnItemClickListener {
 
 			if(position != 0){  //プラスボタン以外の画像読み出し
 				Bitmap bmp = BitmapFactory.decodeFile(mFilepath);
+				bmp = Bitmap.createScaledBitmap(bmp, 120, 160, true);
 				holder.imageView.setImageBitmap(bmp);
 				if(mFavo.equals("true")){
 
@@ -153,6 +170,7 @@ public class Mylist extends Activity implements OnItemClickListener {
 
 			}else{  //プラスボタンの画像読み出し
 				Bitmap bmp = BitmapFactory.decodeResource(r,R.drawable.plus);
+				bmp = Bitmap.createScaledBitmap(bmp, 120, 160, true);
 				holder.imageView.setImageBitmap(bmp);
 
 				holder.favo.setImageBitmap(bmp3);
